@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>geolocation</title>
+</head>
+<body>
+	<h3>navigagor.geolocation객체</h3>
+	<hr>
+	<div id="msg"></div>
+	<div id="map"></div>
+	<script>
+		/* if(!navigator.geolocation){
+			alert("위치정보 객체 없음.");
+
+		}else{ */
+			alert("위치정보 객체 있음.");
+			navigator.geolocation.getCurrentPosition(found);
+			//callback함수 선언
+			function found(position){
+				var now = new Date(position.timestamp);
+				var lat = position.coords.latitude;//위도
+				var lon = position.coords.longitude;//경도
+				var acc = position.coords.accuracy;//정확도
+
+				lat=lat.toPrecision(6);
+				lon=lon.toPrecision(6);
+
+				var text = "현재시각:"+now.toUTCString()+"<br>";
+				    text+="현재위치 위도:"+lat+", 경도:"+lon+"<br>";
+				    text+="정확도:"+acc;
+
+				document.getElementById('msg').innerHTML=text; 
+
+				var img = new Image();//image객체 생성
+				/* img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + lat+ "," + lon + "&zoom=13&size=400x300&sensor=false&markers=color:red%7Clabel:C%7C"+lat +"," +lon;*/    
+				img.src="http://maps.googleapis.com/maps/api/staticmap?center="
+  +lat+","+lon+"&zoom=14&size=400x300&sensor=false&key=AIzaSyCuu4wR4hHvsiNw3Wdue9CLKIWjVp6P-rU";
+  				document.getElementById("map").appendChild(img);
+  				// 구글 지도 이미지를 div의 자식으로 붙임
+			}
+/* 
+		} */
+	</script>
+</body>
+</html>

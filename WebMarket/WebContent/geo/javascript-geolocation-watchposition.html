@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>geolocation-watchpostion()</title>
+</head>
+<body>
+	<h3>watchposition</h3>
+	<hr>
+	<div id="msg"></div>
+	<div id="map"></div>
+	<script>
+		if(!navigator.geolocation){
+			alert("지오로케이션 불가");
+		}else{
+		   var options = { // 3 개의 값을 가진 전역 객체. watchPosition()의 마지막 매개 변수로 전달 
+			enableHighAccuracy: false,
+			timeout: 5000,
+			maximumAge: 0 
+		};
+		var img = new Image();//이미지 객체
+	    var count=0;//반복횟수
+ 	    var watchID;//id
+	 // changed() 콜백 함수 등록하고, 반복된 위치 서비스를 시작시킨다.
+	  watchID = navigator.geolocation.watchPosition(changed, null, options); 
+      }
+		  function changed(position){
+			if(count == 5) { // clearWatch() 테스트를 위해 5번만 서비스 
+		      navigator.geolocation.clearWatch(watchID); // 반복 서비스 종료
+		      document.getElementById("msg").innerHTML = "위치 서비스 종료";
+		     return;
+			}
+			var lat = position.coords.latitude; // 변경된 위도
+	        var lon = position.coords.longitude // 변경된 경도
+	        var text = count + ": (위도 " + lat + "°, 경도 " + lon + "°)로 변경됨<br>";
+	        document.getElementById("msg").innerHTML = text; // 위치 정보 출력
+	        // 지도 이미지 갱신
+	  /*       "http://maps.googleapis.com/maps/api/staticmap?center="
+  +lat+","+lon+"&zoom=14&size=400x300&sensor=false&key=AIzaSyCuu4wR4hHvsiNw3Wdue9CLKIWjVp6P-rU";
+	  */       
+          img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + lat
+    		+ "," + lon + "&zoom=13&size=400x300&key=AIzaSyCuu4wR4hHvsiNw3Wdue9CLKIWjVp6P-rU&sensor=false&markers=color:red%7Clabel:C%7C"+lat
+    		+"," +lon;
+    if(count == 0) // 처음이면 구글 지도 이미지 부착
+	    document.getElementById("map").appendChild(img); // 지도 이미지 부착 
+	count++; // 갱신 회수 증가
+		   }
+
+	</script>
+</body>
+</html>
